@@ -57,16 +57,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+				// Professional Onnasis-inspired colors
+				navy: {
+					950: '#0A0F1C',
+					900: '#1A2332',
+					800: '#243142',
+				},
+				'blue-primary': '#0066CC',
+				'blue-hover': '#0052A3',
+				'blue-light': '#2B7CE5',
+				'success': '#10B981',
+				'warning': '#F59E0B',
+				'text-light': '#E2E8F0',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -132,10 +134,10 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': {
-						boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+						boxShadow: '0 0 20px rgba(0, 102, 204, 0.5)'
 					},
 					'50%': {
-						boxShadow: '0 0 40px rgba(59, 130, 246, 0.8)'
+						boxShadow: '0 0 40px rgba(0, 102, 204, 0.8)'
 					}
 				},
 				'gradient': {

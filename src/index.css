@@ -14,8 +14,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 210 100% 40%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -31,56 +31,39 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 210 100% 40%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 217 33% 7%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 217 33% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 217 33% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 210 100% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217 33% 15%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217 33% 15%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 217 33% 15%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 217 33% 15%;
+    --input: 217 33% 15%;
+    --ring: 210 100% 40%;
   }
 }
 
@@ -90,16 +73,41 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#0A0F1C] text-white;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
-/* Custom Patterns and Animations */
-.bg-grid-pattern {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+/* Professional color variables inspired by Onnasis */
+:root {
+  --navy-950: #0A0F1C;
+  --navy-900: #1A2332;
+  --navy-800: #243142;
+  --blue-primary: #0066CC;
+  --blue-hover: #0052A3;
+  --blue-light: #2B7CE5;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --text-light: #E2E8F0;
+}
+
+/* Professional button styles */
+.btn-primary {
+  @apply bg-[#0066CC] text-white border-transparent hover:bg-[#0052A3] transition-all duration-300;
+}
+
+.btn-secondary {
+  @apply bg-white text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC] hover:text-white transition-all duration-300;
+}
+
+/* Professional card styles inspired by financial platforms */
+.professional-card {
+  @apply bg-[#1A2332] border border-gray-700 rounded-xl hover:border-[#0066CC] transition-all duration-300 hover:scale-[1.02];
+}
+
+/* Icon styles */
+.professional-icon {
+  @apply w-8 h-8 text-[#0066CC];
 }
 
 /* Smooth scrolling */
@@ -107,22 +115,22 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: #1A2332;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4b5563;
+  background: #0066CC;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: #0052A3;
 }
 
 /* Loading animations */
@@ -141,7 +149,7 @@ html {
   animation: fadeInUp 0.6s ease-out;
 }
 
-/* Gradient text animation */
+/* Professional gradient animations */
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -159,49 +167,25 @@ html {
   animation: gradient 3s ease infinite;
 }
 
-/* Pulse glow effect */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-
 /* Hover effects */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
 }
 
-/* Typography improvements */
-.text-balance {
-  text-wrap: balance;
-}
-
-/* Focus styles */
+/* Focus styles for accessibility */
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #0066CC;
   outline-offset: 2px;
 }
 
-/* Custom selection */
+/* Professional selection */
 ::selection {
-  background-color: #3b82f6;
+  background-color: #0066CC;
   color: white;
-}
-
-/* Improved form inputs */
-input[type="email"]:focus {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
