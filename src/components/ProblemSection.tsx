@@ -69,22 +69,22 @@ const ProblemSection = () => {
         </div>
 
         {/* Cost Comparison */}
-        <div className="mt-16 bg-gradient-to-r from-red-900/20 to-[#1A2332] border border-red-500/30 rounded-xl p-8">
+        <div className="mt-16 bg-gradient-to-r from-[#0066CC]/10 to-[#1A2332] border border-[#0066CC]/30 rounded-xl p-8">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-white mb-4">
               The Hidden Cost of Outdated Tools
             </h3>
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-400 mb-2">€24,000/year</div>
+                <div className="text-3xl font-bold text-[#0066CC] mb-2">€24,000/year</div>
                 <div className="text-[#E2E8F0]">Bloomberg Terminal</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-400 mb-2">500+ hours</div>
+                <div className="text-3xl font-bold text-[#0066CC] mb-2">500+ hours</div>
                 <div className="text-[#E2E8F0]">Wasted on manual analysis</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-400 mb-2">Countless</div>
+                <div className="text-3xl font-bold text-[#0066CC] mb-2">Countless</div>
                 <div className="text-[#E2E8F0]">Missed opportunities</div>
               </div>
             </div>
