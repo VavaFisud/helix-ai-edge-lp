@@ -9,7 +9,9 @@ import InteractiveDemoSection from '@/components/InteractiveDemoSection';
 import TechnologyShowcase from '@/components/TechnologyShowcase';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import ProfessionalPricingSection from '@/components/ProfessionalPricingSection';
+import NewsletterSection from '@/components/NewsletterSection';
 import ProfessionalHowItWorks from '@/components/ProfessionalHowItWorks';
+import DailyIntelligenceReports from '@/components/DailyIntelligenceReports';
 import ProfessionalFAQSection from '@/components/ProfessionalFAQSection';
 import ModernFinalCTA from '@/components/ModernFinalCTA';
 import Footer from '@/components/Footer';
@@ -27,7 +29,9 @@ const Index = () => {
         <TechnologyShowcase />
         <TestimonialsSection />
         <ProfessionalPricingSection />
+        <NewsletterSection />
         <ProfessionalHowItWorks />
+        <DailyIntelligenceReports />
         <ProfessionalFAQSection />
         <ModernFinalCTA />
       </main>
