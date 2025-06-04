@@ -4,13 +4,13 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ProblemSection from '@/components/ProblemSection';
 import SolutionPreview from '@/components/SolutionPreview';
-import FeaturesShowcase from '@/components/FeaturesShowcase';
+import FeaturesCarousel from '@/components/FeaturesCarousel';
 import InteractiveDemoSection from '@/components/InteractiveDemoSection';
 import TechnologyShowcase from '@/components/TechnologyShowcase';
 import TestimonialsSection from '@/components/TestimonialsSection';
-import PricingSection from '@/components/PricingSection';
-import HowItWorksSection from '@/components/HowItWorksSection';
-import FAQSection from '@/components/FAQSection';
+import ProfessionalPricingSection from '@/components/ProfessionalPricingSection';
+import ProfessionalHowItWorks from '@/components/ProfessionalHowItWorks';
+import ProfessionalFAQSection from '@/components/ProfessionalFAQSection';
 import ModernFinalCTA from '@/components/ModernFinalCTA';
 import Footer from '@/components/Footer';
 
@@ -22,13 +22,13 @@ const Index = () => {
         <HeroSection />
         <ProblemSection />
         <SolutionPreview />
-        <FeaturesShowcase />
+        <FeaturesCarousel />
         <InteractiveDemoSection />
         <TechnologyShowcase />
         <TestimonialsSection />
-        <PricingSection />
-        <HowItWorksSection />
-        <FAQSection />
+        <ProfessionalPricingSection />
+        <ProfessionalHowItWorks />
+        <ProfessionalFAQSection />
         <ModernFinalCTA />
       </main>
       <Footer />
