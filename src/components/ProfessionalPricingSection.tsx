@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Check } from 'lucide-react';
+import { Shield, Check, Star, Zap, Crown } from 'lucide-react';
 
 const ProfessionalPricingSection = () => {
   const features = [
@@ -18,108 +18,140 @@ const ProfessionalPricingSection = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-[#000000]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pricing" className="py-20 relative overflow-hidden">
+      {/* Stunning Background with Gradients and Patterns */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#000000] via-[#0A0F1C] to-[#1A2332]"></div>
+      <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
+      
+      {/* Animated Background Elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-[#0066CC]/10 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#0066CC]/15 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#0066CC]/5 rounded-full blur-3xl"></div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Simple Pricing, Extraordinary Value
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0066CC] to-[#0052A3] rounded-full mb-6 shadow-2xl shadow-[#0066CC]/50">
+            <Crown className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 bg-gradient-to-r from-white via-[#E2E8F0] to-white bg-clip-text text-transparent">
+            Premium Trading Intelligence
           </h2>
-          <p className="text-xl text-[#E2E8F0] max-w-3xl mx-auto">
-            Everything you need to dominate forex markets. No hidden fees, no limits.
+          <p className="text-xl text-[#E2E8F0] max-w-3xl mx-auto leading-relaxed">
+            Join elite traders who've transformed their analysis with institutional-grade AI
           </p>
         </div>
 
-        {/* Main Pricing Card */}
+        {/* Premium Pricing Card */}
         <div className="max-w-lg mx-auto">
-          <Card className="bg-[#1A1A1A] border-[#0066CC] border-2 relative shadow-2xl shadow-[#0066CC]/20">
-            {/* Popular Badge */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#0066CC] text-white px-6 py-2 rounded-full text-sm font-bold">
-              Most Popular
-            </div>
+          <div className="relative group">
+            {/* Glow Effect */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-[#0066CC]/50 via-[#0052A3]/30 to-[#0066CC]/50 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-500"></div>
             
-            <CardHeader className="text-center pb-8 pt-12">
-              <CardTitle className="text-3xl font-bold text-white">Pro Plan</CardTitle>
-              <CardDescription className="text-[#E2E8F0] text-lg mt-2">
-                The Complete Helix Experience
-              </CardDescription>
-              <div className="mt-8">
-                <span className="text-5xl font-bold text-white">€299</span>
-                <span className="text-[#E2E8F0] text-xl">/month</span>
-              </div>
-              <div className="text-[#E2E8F0] text-sm mt-2">
-                Billed monthly • Cancel anytime
-              </div>
-            </CardHeader>
-            
-            <CardContent className="px-8 pb-8">
-              {/* Features List */}
-              <div className="space-y-4 mb-8">
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-start">
-                    <Check className="w-5 h-5 text-[#0066CC] mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-[#E2E8F0]">{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <div className="space-y-4">
-                <Button 
-                  size="lg" 
-                  className="w-full bg-[#0066CC] hover:bg-[#0052A3] text-white py-4 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-[#0066CC]/25 hover:scale-105"
-                >
-                  Start Pro Trial - 3 Days Free
-                </Button>
-                <div className="text-center">
-                  <div className="inline-flex items-center text-[#10B981] text-sm">
-                    <Shield className="w-4 h-4 mr-2" />
-                    30-Day Money-Back Guarantee
-                  </div>
+            <Card className="relative bg-gradient-to-br from-[#1A1A1A] via-[#1A2332] to-[#1A1A1A] border-2 border-[#0066CC]/30 shadow-2xl shadow-[#0066CC]/20 hover:shadow-[#0066CC]/40 transition-all duration-500 hover:scale-[1.02]">
+              {/* Premium Badge */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                <div className="bg-gradient-to-r from-[#0066CC] to-[#0052A3] text-white px-8 py-3 rounded-full text-sm font-bold shadow-2xl shadow-[#0066CC]/50 flex items-center space-x-2">
+                  <Star className="w-4 h-4 fill-current" />
+                  <span>Elite Plan</span>
+                  <Star className="w-4 h-4 fill-current" />
                 </div>
               </div>
-
-              {/* Additional Benefits */}
-              <div className="mt-8 pt-6 border-t border-[#333333]">
-                <h4 className="text-white font-bold mb-4 text-center">What's Included in Your Trial:</h4>
-                <div className="grid md:grid-cols-2 gap-4 text-sm">
-                  <div className="space-y-2">
-                    <div className="flex items-center text-[#E2E8F0]">
-                      <Check className="w-4 h-4 text-[#0066CC] mr-2" />
-                      Complete access to all Pro features
-                    </div>
-                    <div className="flex items-center text-[#E2E8F0]">
-                      <Check className="w-4 h-4 text-[#0066CC] mr-2" />
-                      No credit card required to start
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center text-[#E2E8F0]">
-                      <Check className="w-4 h-4 text-[#0066CC] mr-2" />
-                      Cancel anytime with one click
-                    </div>
-                    <div className="flex items-center text-[#E2E8F0]">
-                      <Check className="w-4 h-4 text-[#0066CC] mr-2" />
-                      Priority support during trial
+              
+              <CardHeader className="text-center pb-8 pt-16">
+                <CardTitle className="text-3xl font-bold text-white mb-2">Pro Plan</CardTitle>
+                <CardDescription className="text-[#E2E8F0] text-lg">
+                  Complete Helix Experience
+                </CardDescription>
+                <div className="mt-8 relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0066CC]/20 to-transparent rounded-2xl blur-lg"></div>
+                  <div className="relative bg-gradient-to-r from-[#0066CC]/10 to-[#0052A3]/10 rounded-2xl p-6 border border-[#0066CC]/30">
+                    <span className="text-6xl font-bold text-white bg-gradient-to-r from-white to-[#E2E8F0] bg-clip-text text-transparent">€299</span>
+                    <span className="text-[#E2E8F0] text-xl ml-2">/month</span>
+                    <div className="text-[#E2E8F0] text-sm mt-2 flex items-center justify-center space-x-2">
+                      <Shield className="w-4 h-4 text-[#10B981]" />
+                      <span>Billed monthly • Cancel anytime</span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              
+              <CardContent className="px-8 pb-8">
+                {/* Features List */}
+                <div className="space-y-4 mb-8">
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-start group/item">
+                      <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-[#0066CC] to-[#0052A3] rounded-full flex items-center justify-center mr-4 mt-0.5 shadow-lg shadow-[#0066CC]/30 group-hover/item:shadow-[#0066CC]/50 transition-all duration-300">
+                        <Check className="w-3 h-3 text-white font-bold" />
+                      </div>
+                      <span className="text-[#E2E8F0] leading-relaxed group-hover/item:text-white transition-colors duration-300">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <div className="space-y-6">
+                  <div className="relative group/button">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-75 group-hover/button:opacity-100 transition duration-300"></div>
+                    <Button 
+                      size="lg" 
+                      className="relative w-full bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white py-6 text-lg font-semibold transition-all duration-300 shadow-2xl shadow-[#0066CC]/25 hover:shadow-[#0066CC]/50 border-0 group-hover/button:scale-105"
+                    >
+                      <Zap className="w-5 h-5 mr-2" />
+                      Start Elite Trial - 3 Days Free
+                    </Button>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="inline-flex items-center text-[#10B981] text-sm bg-[#10B981]/10 px-4 py-2 rounded-full border border-[#10B981]/30">
+                      <Shield className="w-4 h-4 mr-2" />
+                      30-Day Money-Back Guarantee
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trial Benefits */}
+                <div className="mt-8 pt-6 border-t border-[#0066CC]/20">
+                  <h4 className="text-white font-bold mb-4 text-center">Elite Trial Includes:</h4>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-3">
+                      <div className="flex items-center text-[#E2E8F0]">
+                        <div className="w-2 h-2 bg-[#0066CC] rounded-full mr-3"></div>
+                        Complete access to all Pro features
+                      </div>
+                      <div className="flex items-center text-[#E2E8F0]">
+                        <div className="w-2 h-2 bg-[#0066CC] rounded-full mr-3"></div>
+                        No credit card required to start
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-[#E2E8F0]">
+                        <div className="w-2 h-2 bg-[#0066CC] rounded-full mr-3"></div>
+                        Cancel anytime with one click
+                      </div>
+                      <div className="flex items-center text-[#E2E8F0]">
+                        <div className="w-2 h-2 bg-[#0066CC] rounded-full mr-3"></div>
+                        Priority support during trial
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
-        {/* Trust Signal */}
+        {/* Trust Signals */}
         <div className="text-center mt-12">
-          <p className="text-[#E2E8F0] text-sm mb-2">
-            <span className="text-[#0066CC] font-semibold">2,847 traders</span> started their trial this month
-          </p>
-          <div className="flex justify-center items-center space-x-2">
-            {[...Array(5)].map((_, i) => (
-              <svg key={i} className="w-4 h-4 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            ))}
-            <span className="text-[#E2E8F0] text-sm ml-2">4.9/5 from 500+ reviews</span>
+          <div className="bg-gradient-to-r from-[#0066CC]/5 to-[#0052A3]/5 border border-[#0066CC]/20 rounded-2xl p-6 backdrop-blur-sm">
+            <p className="text-[#E2E8F0] text-sm mb-3">
+              <span className="text-[#0066CC] font-semibold text-lg">2,847 traders</span> started their elite trial this month
+            </p>
+            <div className="flex justify-center items-center space-x-2">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-[#F59E0B] fill-current" />
+              ))}
+              <span className="text-[#E2E8F0] text-sm ml-3">4.9/5 from 500+ elite traders</span>
+            </div>
           </div>
         </div>
       </div>
