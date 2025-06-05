@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ProblemSection from '@/components/ProblemSection';
 import SolutionPreview from '@/components/SolutionPreview';
+import DailyIntelligenceReports from '@/components/DailyIntelligenceReports';
 import FeaturesCarousel from '@/components/FeaturesCarousel';
 import InteractiveDemoSection from '@/components/InteractiveDemoSection';
 import TechnologyShowcase from '@/components/TechnologyShowcase';
@@ -11,7 +12,6 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import ProfessionalPricingSection from '@/components/ProfessionalPricingSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import ProfessionalHowItWorks from '@/components/ProfessionalHowItWorks';
-import DailyIntelligenceReports from '@/components/DailyIntelligenceReports';
 import ProfessionalFAQSection from '@/components/ProfessionalFAQSection';
 import ModernFinalCTA from '@/components/ModernFinalCTA';
 import Footer from '@/components/Footer';
@@ -24,6 +24,7 @@ const Index = () => {
         <HeroSection />
         <ProblemSection />
         <SolutionPreview />
+        <DailyIntelligenceReports />
         <FeaturesCarousel />
         <InteractiveDemoSection />
         <TechnologyShowcase />
@@ -31,7 +32,6 @@ const Index = () => {
         <ProfessionalPricingSection />
         <NewsletterSection />
         <ProfessionalHowItWorks />
-        <DailyIntelligenceReports />
         <ProfessionalFAQSection />
         <ModernFinalCTA />
       </main>
