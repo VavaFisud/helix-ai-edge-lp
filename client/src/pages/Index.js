@@ -1,0 +1,20 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import ProblemSection from '@/components/ProblemSection';
+import SolutionPreview from '@/components/SolutionPreview';
+import DailyIntelligenceReports from '@/components/DailyIntelligenceReports';
+import FeaturesCarousel from '@/components/FeaturesCarousel';
+import InteractiveDemoSection from '@/components/InteractiveDemoSection';
+import TechnologyShowcase from '@/components/TechnologyShowcase';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import ProfessionalPricingSection from '@/components/ProfessionalPricingSection';
+import NewsletterSection from '@/components/NewsletterSection';
+import ProfessionalHowItWorks from '@/components/ProfessionalHowItWorks';
+import ProfessionalFAQSection from '@/components/ProfessionalFAQSection';
+import ModernFinalCTA from '@/components/ModernFinalCTA';
+import Footer from '@/components/Footer';
+const Index = () => {
+    return (_jsxs("div", { className: "min-h-screen bg-[#0A0F1C]", children: [_jsx(Header, {}), _jsxs("main", { children: [_jsx(HeroSection, {}), _jsx(ProblemSection, {}), _jsx(SolutionPreview, {}), _jsx(DailyIntelligenceReports, {}), _jsx(FeaturesCarousel, {}), _jsx(InteractiveDemoSection, {}), _jsx(TechnologyShowcase, {}), _jsx(TestimonialsSection, {}), _jsx(ProfessionalPricingSection, {}), _jsx(NewsletterSection, {}), _jsx(ProfessionalHowItWorks, {}), _jsx(ProfessionalFAQSection, {}), _jsx(ModernFinalCTA, {})] }), _jsx(Footer, {})] }));
+};
+export default Index;

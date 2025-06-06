@@ -1,0 +1,17 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { BarChart, Layers, Maximize } from 'lucide-react';
+const candlestickData = [
+    { x: 40, open: 80, high: 75, low: 120, close: 110, bullish: true },
+    { x: 60, open: 70, high: 65, low: 110, close: 95, bullish: false },
+    { x: 80, open: 75, high: 70, low: 105, close: 95, bullish: true },
+    { x: 100, open: 72, high: 68, low: 98, close: 90, bullish: true },
+    { x: 120, open: 85, high: 80, low: 115, close: 107, bullish: false },
+];
+export function InteractiveChartWidget() {
+    const [selectedTimeframe, setSelectedTimeframe] = useState('1H');
+    const timeframes = ['1H', '4H', '1D', '1W'];
+    return (_jsxs(Card, { className: "xl:col-span-2 glassmorphism widget-hover", children: [_jsx(CardHeader, { children: _jsxs("div", { className: "flex items-center justify-between", children: [_jsx(CardTitle, { className: "text-lg font-bold", children: "EUR/USD Chart" }), _jsx("div", { className: "flex space-x-2", children: timeframes.map((tf) => (_jsx(Button, { variant: selectedTimeframe === tf ? 'default' : 'outline', size: "sm", onClick: () => setSelectedTimeframe(tf), className: "text-sm", children: tf }, tf))) })] }) }), _jsxs(CardContent, { className: "space-y-4", children: [_jsxs("div", { className: "h-64 bg-muted rounded-lg relative overflow-hidden", children: [_jsxs("svg", { className: "w-full h-full", viewBox: "0 0 400 200", children: [_jsx("defs", { children: _jsx("pattern", { id: "grid", width: "40", height: "20", patternUnits: "userSpaceOnUse", children: _jsx("path", { d: "M 40 0 L 0 0 0 20", fill: "none", stroke: "hsl(var(--border))", strokeWidth: "0.5" }) }) }), _jsx("rect", { width: "100%", height: "100%", fill: "url(#grid)" }), _jsx("g", { children: candlestickData.map((candle, index) => (_jsxs("g", { children: [_jsx("line", { x1: candle.x + 3, y1: candle.high, x2: candle.x + 3, y2: candle.low, stroke: candle.bullish ? '#10B981' : '#EF4444', strokeWidth: "1" }), _jsx("rect", { x: candle.x, y: Math.min(candle.open, candle.close), width: "6", height: Math.abs(candle.close - candle.open), fill: candle.bullish ? '#10B981' : '#EF4444' })] }, index))) }), _jsx("line", { x1: "0", y1: "90", x2: "400", y2: "88", stroke: "hsl(var(--primary))", strokeWidth: "2", strokeDasharray: "5,5" })] }), _jsxs("div", { className: "absolute top-4 right-4 bg-background/80 rounded px-2 py-1 backdrop-blur-sm", children: [_jsx("div", { className: "text-sm font-medium", children: "1.0847" }), _jsx("div", { className: "text-xs text-green-500", children: "+0.0023 (+0.21%)" })] })] }), _jsxs("div", { className: "flex justify-between items-center", children: [_jsxs("div", { className: "flex space-x-4 text-sm", children: [_jsxs(Button, { variant: "ghost", size: "sm", className: "text-muted-foreground hover:text-foreground", children: [_jsx(BarChart, { className: "w-4 h-4 mr-1" }), "Indicators"] }), _jsxs(Button, { variant: "ghost", size: "sm", className: "text-muted-foreground hover:text-foreground", children: [_jsx(Layers, { className: "w-4 h-4 mr-1" }), "Overlays"] })] }), _jsxs(Button, { variant: "link", className: "text-primary hover:text-primary/80 text-sm p-0", children: ["Full Chart View ", _jsx(Maximize, { className: "w-4 h-4 ml-1" })] })] })] })] }));
+}

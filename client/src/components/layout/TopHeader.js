@@ -1,0 +1,12 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Bell, Sun, Moon, Dna, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useTheme } from '@/contexts/ThemeContext';
+export function TopHeader({ title = 'Dashboard', subtitle = 'Real-time forex market overview', ghostTradingBalance = 87543.21, isCollapsed = false }) {
+    const { theme, toggleTheme } = useTheme();
+    return (_jsx("header", { className: "sticky top-0 z-30 bg-card/95 backdrop-blur-md border-b border-border px-6 py-4", children: _jsxs("div", { className: "flex items-center justify-between", children: [_jsxs("div", { className: "flex items-center space-x-4", children: [isCollapsed && (_jsxs("div", { className: "flex items-center space-x-3", children: [_jsx("div", { className: "w-8 h-8 bg-primary rounded-lg flex items-center justify-center", children: _jsx(Dna, { className: "w-5 h-5 text-primary-foreground" }) }), _jsx("span", { className: "text-xl font-bold text-foreground", children: "Helix Terminal" })] })), !isCollapsed && (_jsxs("div", { children: [_jsx("h1", { className: "text-2xl font-bold text-foreground", children: title }), _jsx("p", { className: "text-muted-foreground text-sm", children: subtitle })] }))] }), _jsxs("div", { className: "flex items-center space-x-4", children: [_jsxs("div", { className: "glassmorphism rounded-lg px-4 py-2 border border-primary/20", children: [_jsx("div", { className: "text-xs text-muted-foreground", children: "Ghost Trading Balance" }), _jsxs("div", { className: "text-lg font-bold text-primary", children: ["$", ghostTradingBalance.toLocaleString('en-US', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })] })] }), _jsx(Button, { variant: "outline", size: "sm", onClick: toggleTheme, className: "p-2", children: theme === 'dark' ? (_jsx(Sun, { className: "w-4 h-4" })) : (_jsx(Moon, { className: "w-4 h-4" })) }), _jsxs(Button, { variant: "outline", size: "sm", className: "relative p-2", children: [_jsx(Bell, { className: "w-4 h-4" }), _jsx(Badge, { variant: "destructive", className: "absolute -top-1 -right-1 w-5 h-5 text-xs p-0 flex items-center justify-center", children: "3" })] }), _jsx(Button, { variant: "outline", size: "sm", className: "p-2", children: _jsx(User, { className: "w-4 h-4" }) })] })] }) }));
+}
