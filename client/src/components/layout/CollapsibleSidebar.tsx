@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BarChart3, 
@@ -15,8 +15,20 @@ import {
   ChevronRight, 
   User,
   LogOut,
-  Dna
+  Dna,
+  ChevronDown
 } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
@@ -29,15 +41,15 @@ interface NavItem {
 
 const navigationItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: BarChart3, active: true },
-  { id: 'charts', label: 'Charts', icon: TrendingUp },
+  { id: 'market-analysis', label: 'Market Analysis', icon: TrendingUp },
   { id: 'reports', label: 'Reports & Analytics', icon: FileText },
-  { id: 'ghostview', label: 'GhostView', icon: Bot },
-  { id: 'central-bank', label: 'Central Bank Whisperer', icon: Building2 },
-  { id: 'market-psychology', label: 'Market Psychology', icon: Brain },
-  { id: 'portfolio', label: 'Portfolio', icon: Briefcase },
-  { id: 'markets', label: 'Markets', icon: Globe },
+  { id: 'work-in-progress/ghostview', label: 'GhostView', icon: Bot },
+  { id: 'work-in-progress/central-bank-whisperer', label: 'Central Bank Whisperer', icon: Building2 },
+  { id: 'work-in-progress/market-psychology', label: 'Market Psychology', icon: Brain },
+  { id: 'work-in-progress/charts', label: 'Charts', icon: TrendingUp },
+  { id: 'work-in-progress/markets', label: 'Markets', icon: Globe },
+  { id: 'work-in-progress/portfolio', label: 'Portfolio', icon: Briefcase },
   { id: 'calendar', label: 'FX Calendar', icon: Calendar },
-  { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
 interface CollapsibleSidebarProps {
@@ -46,12 +58,76 @@ interface CollapsibleSidebarProps {
 }
 
 export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarProps) {
+  const [user, setUser] = useState<any>(null);
+  const [userFullName, setUserFullName] = useState<string | null>(null);
+  const [accountStatus, setAccountStatus] = useState<string>('Free');
   const [isExpanded, setIsExpanded] = useState(true);
-  const [activeItem, setActiveItem] = useState('dashboard');
+  const location = useLocation();
 
   const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId);
     onNavigate?.(itemId);
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+        const metadata = session.user.user_metadata;
+        const firstName = metadata?.first_name || '';
+        const lastName = metadata?.last_name || '';
+        const fullName = metadata?.full_name || `${firstName} ${lastName}`.trim() || session.user.email;
+        setUserFullName(fullName);
+        setAccountStatus(metadata?.account_type || 'Free');
+      }
+    };
+    fetchUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const metadata = session.user.user_metadata;
+        const firstName = metadata?.first_name || '';
+        const lastName = metadata?.last_name || '';
+        const fullName = metadata?.full_name || `${firstName} ${lastName}`.trim() || session.user.email;
+        setUserFullName(fullName);
+        setAccountStatus(metadata?.account_type || 'Free');
+      } else {
+        setUserFullName(null);
+      }
+    });
+
+    // Listen for custom profileUpdated event
+    const handleProfileUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent<{ user: any }>;
+      if (customEvent.detail && customEvent.detail.user) {
+        const updatedUser = customEvent.detail.user;
+        console.log('CollapsibleSidebar: profileUpdated event received, updating user from event detail:', updatedUser);
+        console.log('CollapsibleSidebar: Avatar URL from updated user:', updatedUser.user_metadata?.avatar_url);
+        setUser(updatedUser);
+        const metadata = updatedUser.user_metadata;
+        const firstName = metadata?.first_name || '';
+        const lastName = metadata?.last_name || '';
+        const fullName = metadata?.full_name || `${firstName} ${lastName}`.trim() || updatedUser.email;
+        setUserFullName(fullName);
+        setAccountStatus(metadata?.account_type || 'Free');
+      } else {
+        console.log('CollapsibleSidebar: profileUpdated event received, but no user detail. Refetching.');
+        fetchUser();
+      }
+    };
+
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+    };
+  }, []); // Remove fetchUser from dependency array since it's defined inside the effect
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/auth';
   };
 
   const handleToggle = () => {
@@ -62,19 +138,19 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
 
   const sidebarVariants = {
     expanded: { width: 280 },
-    collapsed: { width: 64 }
+    collapsed: { width: 80 } // Increased collapsed width
   };
 
   return (
     <TooltipProvider>
       <motion.div
-        className="fixed left-0 top-0 h-full bg-sidebar border-r border-sidebar-border z-20 flex flex-col"
+        className="fixed left-0 top-0 h-full bg-sidebar z-20 flex flex-col transition-colors duration-200 shadow-lg"
         variants={sidebarVariants}
         animate={isExpanded ? 'expanded' : 'collapsed'}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
         {/* Header */}
-        <div className="p-6 border-b border-sidebar-border">
+        <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <AnimatePresence>
               {isExpanded && (
@@ -85,12 +161,14 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <Dna className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <span className="text-xl font-bold text-sidebar-foreground">
-                    Helix Terminal
-                  </span>
+                  <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200">
+                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                      <Dna className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <span className="text-xl font-bold text-sidebar-foreground">
+                      Helix Terminal
+                    </span>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -111,22 +189,13 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
+        <nav className={`flex-1 ${isExpanded ? 'p-4' : 'p-2'} space-y-2 overflow-y-auto custom-scrollbar`}>
           {navigationItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeItem === item.id;
-            
-            const navButton = (
-              <Button
-                key={item.id}
-                variant={isActive ? 'default' : 'ghost'}
-                className={`w-full justify-start h-12 ${
-                  isActive 
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                    : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                } ${!isExpanded ? 'px-3' : 'px-4'}`}
-                onClick={() => handleItemClick(item.id)}
-              >
+            const navPath = `/${item.id}`;
+            const isActive = location.pathname === navPath;
+            const navButtonContent = (
+              <>
                 <Icon className={`${isExpanded ? 'mr-3' : ''} w-5 h-5 flex-shrink-0`} />
                 <AnimatePresence>
                   {isExpanded && (
@@ -141,7 +210,23 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </Button>
+              </>
+            );
+
+            const navButton = (
+              <Link to={navPath} className="w-full" onClick={() => handleItemClick(item.id)}>
+                <Button
+                  key={item.id}
+                  variant={isActive ? 'default' : 'ghost'}
+                  className={`w-full ${isExpanded ? 'justify-start' : 'justify-center'} h-12 ${!isExpanded ? 'px-2' : 'px-4'} ${ 
+                    isActive 
+                      ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                      : 'text-sidebar-foreground group-hover:bg-sidebar-accent group-hover:text-sidebar-accent-foreground'
+                  }`}
+                >
+                  {navButtonContent}
+                </Button>
+              </Link>
             );
 
             if (!isExpanded) {
@@ -162,46 +247,96 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
         </nav>
 
         {/* User Profile */}
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-              <User className="w-5 h-5 text-primary-foreground" />
-            </div>
-            
-            <AnimatePresence>
+        <div className="p-4">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className={`w-full flex items-center ${isExpanded ? 'justify-start space-x-3' : 'justify-center'} ${!isExpanded ? 'p-3' : 'p-2'} h-auto text-left text-sidebar-foreground group-hover:bg-sidebar-accent group-hover:text-sidebar-accent-foreground`}>
+                  <Avatar className="h-10 w-10 flex-shrink-0">
+                    <AvatarImage 
+                      src={user.user_metadata?.avatar_url || undefined} 
+                      alt={userFullName || user.email}
+                      onLoad={() => {
+                        console.log('CollapsibleSidebar: Avatar loaded successfully:', user.user_metadata?.avatar_url);
+                      }}
+                      onError={(e) => {
+                        console.log('CollapsibleSidebar: Avatar image failed to load:', user.user_metadata?.avatar_url);
+                        console.log('CollapsibleSidebar: Full user metadata:', user.user_metadata);
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <AvatarFallback>
+                      {user.user_metadata?.first_name ? 
+                        user.user_metadata.first_name.charAt(0).toUpperCase() + (user.user_metadata?.last_name ? user.user_metadata.last_name.charAt(0).toUpperCase() : '') :
+                        (userFullName ? userFullName.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase())
+                      }
+                    </AvatarFallback>
+                  </Avatar>
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div 
+                        className="flex-1 min-w-0"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="text-sm font-medium text-sidebar-foreground truncate">
+                          {userFullName || 'User'}
+                        </div>
+                        <div className="text-xs text-sidebar-foreground/70 truncate">
+                          {accountStatus} Account
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  {isExpanded && <ChevronDown className="h-4 w-4 text-sidebar-foreground/70 ml-auto flex-shrink-0" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side={isExpanded ? "top" : "right"} align="start" className="mb-2 w-56 bg-card border-border shadow-lg">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none text-foreground">{userFullName || 'User'}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="hover:bg-muted/50 cursor-pointer">
+                  <Link to="/profile-settings">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-muted/50 cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:bg-red-500/10 cursor-pointer focus:bg-red-500/10 focus:text-red-500">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="ghost" className={`w-full flex items-center ${isExpanded ? 'justify-start space-x-3' : 'justify-center'} p-2 h-auto`} onClick={() => window.location.href = '/auth'}>
+              <Avatar className="h-10 w-10">
+                 <AvatarFallback />
+              </Avatar>
               {isExpanded && (
                 <motion.div
-                  className="flex-1 min-w-0"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="text-sm font-medium text-sidebar-foreground truncate">
-                    Alex Trader
-                  </div>
-                  <div className="text-xs text-sidebar-foreground/70 truncate">
-                    Premium Account
-                  </div>
+                  <div className="text-sm font-medium text-sidebar-foreground">Sign In</div>
                 </motion.div>
               )}
-            </AnimatePresence>
-            
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent flex-shrink-0"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side={isExpanded ? 'top' : 'right'}>
-                Sign Out
-              </TooltipContent>
-            </Tooltip>
-          </div>
+            </Button>
+          )}
         </div>
       </motion.div>
     </TooltipProvider>

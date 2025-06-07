@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,14 +24,14 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Clean Logo */}
-          <div className="flex items-center">
+          <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <img 
               src="/lovable-uploads/fcc2c656-66bd-402c-a0c7-67f47ff18ea6.png" 
               alt="Helix Terminal" 
               className="w-10 h-10"
             />
             <span className="ml-3 text-xl font-bold text-white">Helix Terminal</span>
-          </div>
+          </Link>
 
           {/* Clean Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -45,26 +47,40 @@ const Header = () => {
               Reviews
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0066CC] transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC]/30 to-[#0052A3]/20 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
-              <Link to="/auth?form=signin">
-                <Button 
-                  variant="outline" 
-                  className="relative border-[#0066CC] text-[#0066CC] hover:bg-[#0066CC] hover:text-white transition-all duration-300"
-                >
-                  Sign In
-                </Button>
-              </Link>
-            </div>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
-              
-<Link to="/auth?form=signup">
-                <Button className="relative bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300 transform hover:scale-105">
-                  Start Free Trial
-                </Button>
-              </Link>
-            </div>
+            {!loading && (
+              isAuthenticated ? (
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                  <Link to="/dashboard">
+                    <Button className="relative bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300 transform hover:scale-105">
+                      Dashboard
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC]/30 to-[#0052A3]/20 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
+                    <Link to="/auth?form=signin">
+                      <Button 
+                        variant="outline" 
+                        className="relative border-[#0066CC] text-[#0066CC] hover:bg-[#0066CC] hover:text-white transition-all duration-300"
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                    <Link to="/auth?form=signup">
+                      <Button className="relative bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300 transform hover:scale-105">
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                  </div>
+                </>
+              )
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -85,24 +101,39 @@ const Header = () => {
               <a href="#features" className="block px-3 py-2 text-white hover:text-[#0066CC] hover:bg-[#0066CC]/10 rounded-md transition-colors duration-300">Features</a>
               <a href="#pricing" className="block px-3 py-2 text-white hover:text-[#0066CC] hover:bg-[#0066CC]/10 rounded-md transition-colors duration-300">Pricing</a>
               <a href="#testimonials" className="block px-3 py-2 text-white hover:text-[#0066CC] hover:bg-[#0066CC]/10 rounded-md transition-colors duration-300">Reviews</a>
-              <div className="flex flex-col space-y-2 px-3 pt-4">
-                <Link to="/auth?form=signin" className="w-full">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-[#0066CC] text-[#0066CC] hover:bg-[#0066CC] hover:text-white transition-all duration-300"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
-                  <Link to="/auth?form=signup" className="w-full">
-                    <Button className="relative w-full bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300">
-                      Start Free Trial
-                    </Button>
-                  </Link>
+              {!loading && (
+                <div className="flex flex-col space-y-2 px-3 pt-4">
+                  {isAuthenticated ? (
+                    <div className="relative group">
+                      <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                      <Link to="/dashboard" className="w-full">
+                        <Button className="relative w-full bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300">
+                          Dashboard
+                        </Button>
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      <Link to="/auth?form=signin" className="w-full">
+                        <Button 
+                          variant="outline" 
+                          className="w-full border-[#0066CC] text-[#0066CC] hover:bg-[#0066CC] hover:text-white transition-all duration-300"
+                        >
+                          Sign In
+                        </Button>
+                      </Link>
+                      <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-[#0066CC] to-[#0052A3] rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                        <Link to="/auth?form=signup" className="w-full">
+                          <Button className="relative w-full bg-gradient-to-r from-[#0066CC] to-[#0052A3] hover:from-[#0052A3] hover:to-[#003D7A] text-white transition-all duration-300">
+                            Start Free Trial
+                          </Button>
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}

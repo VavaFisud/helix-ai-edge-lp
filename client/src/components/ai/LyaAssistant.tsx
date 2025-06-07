@@ -5,7 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bot, User, X, Send } from 'lucide-react';
-import { ChatMessage } from '@/types/trading';
+interface ChatMessage {
+  id: string;
+  sender: 'user' | 'lya';
+  content: string;
+  timestamp: Date;
+}
 
 const initialMessages: ChatMessage[] = [
   {

@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 98%; /* Slightly off-white */
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -37,33 +37,33 @@
   }
 
   .dark {
-    --background: 217 33% 7%;
-    --foreground: 210 40% 98%;
+    --background: 220 25.9% 13.1%; /* slate-900 */
+    --foreground: 210 31% 80%; /* slate-300 */
 
-    --card: 217 33% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 217 25.6% 19.8%; /* slate-800 */
+    --card-foreground: 210 31% 80%; /* slate-300 */
 
-    --popover: 217 33% 10%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 217 25.6% 19.8%; /* slate-800 */
+    --popover-foreground: 210 31% 80%; /* slate-300 */
 
-    --primary: 210 100% 40%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 210 100% 56%; /* blue-500 */
+    --primary-foreground: 210 40% 98%; /* slate-50 */
 
-    --secondary: 217 33% 15%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 20.6% 29.6%; /* slate-700 */
+    --secondary-foreground: 210 40% 98%; /* slate-50 */
 
-    --muted: 217 33% 15%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215 20.6% 29.6%; /* slate-700 */
+    --muted-foreground: 215 25% 62.7%; /* slate-400 */
 
-    --accent: 217 33% 15%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 215 20.6% 29.6%; /* slate-700 */
+    --accent-foreground: 210 40% 98%; /* slate-50 */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 33% 15%;
-    --input: 217 33% 15%;
-    --ring: 210 100% 40%;
+    --border: 215 20.6% 29.6%; /* slate-700 / border */
+    --input: 215 20.6% 29.6%; /* slate-700 / input */
+    --ring: 210 100% 56%; /* blue-500 */
   }
 }
 
@@ -73,7 +73,7 @@
   }
 
   body {
-    @apply bg-[#0A0F1C] text-white;
+    @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
   }
 }
