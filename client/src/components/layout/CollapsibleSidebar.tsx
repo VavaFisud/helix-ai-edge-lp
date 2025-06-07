@@ -162,9 +162,11 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
                   transition={{ duration: 0.2 }}
                 >
                   <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200">
-                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                      <Dna className="w-5 h-5 text-primary-foreground" />
-                    </div>
+                    <img 
+                      src="/helix-logo.svg" 
+                      alt="Helix Terminal" 
+                      className="w-8 h-8"
+                    />
                     <span className="text-xl font-bold text-sidebar-foreground">
                       Helix Terminal
                     </span>
@@ -309,9 +311,11 @@ export function CollapsibleSidebar({ onNavigate, onToggle }: CollapsibleSidebarP
                     <span>Profile</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-muted/50 cursor-pointer">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
+                <DropdownMenuItem asChild className="hover:bg-muted/50 cursor-pointer">
+                  <Link to="/settings">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:bg-red-500/10 cursor-pointer focus:bg-red-500/10 focus:text-red-500">

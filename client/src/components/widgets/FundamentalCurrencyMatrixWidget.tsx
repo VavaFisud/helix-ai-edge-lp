@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Info, RefreshCw } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const currencies = ['EUR', 'USD', 'JPY', 'GBP', 'CHF', 'CAD', 'AUD', 'NZD'];
 
-const fundamentalData = {
+const defaultFundamentalData = {
   'EUR': {
     overall: 'bearish',
     interestRate: 'dovish',
@@ -67,6 +68,18 @@ const fundamentalData = {
   }
 };
 
+interface CurrencyData {
+  overall: string;
+  interestRate: string;
+  growth: string;
+  inflation: string;
+  details: string;
+}
+
+type FundamentalDataType = {
+  [key: string]: CurrencyData;
+};
+
 function getBiasIcon(bias: string) {
   switch (bias) {
     case 'bullish': return <TrendingUp className="w-4 h-4 text-green-400" />;
@@ -94,6 +107,91 @@ function getBiasColor(bias: string) {
 
 export function FundamentalCurrencyMatrixWidget() {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const [fundamentalData, setFundamentalData] = useState<FundamentalDataType>(defaultFundamentalData);
+  const [loading, setLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchLatestCurrencyData();
+    
+    // Set up automatic updates every hour to check for new data
+    const interval = setInterval(() => {
+      fetchLatestCurrencyData();
+    }, 60 * 60 * 1000); // Check every hour
+    
+    // Set up daily update at 7:30 AM
+    const now = new Date();
+    const next730AM = new Date();
+    next730AM.setHours(7, 30, 0, 0);
+    
+    // If it's already past 7:30 AM today, set for tomorrow
+    if (now > next730AM) {
+      next730AM.setDate(next730AM.getDate() + 1);
+    }
+    
+    const timeUntil730AM = next730AM.getTime() - now.getTime();
+    
+    const dailyTimeout = setTimeout(() => {
+      fetchLatestCurrencyData();
+      
+      // Set up recurring daily updates
+      const dailyInterval = setInterval(() => {
+        fetchLatestCurrencyData();
+      }, 24 * 60 * 60 * 1000); // Every 24 hours
+      
+      return () => clearInterval(dailyInterval);
+    }, timeUntil730AM);
+    
+    return () => {
+      clearInterval(interval);
+      clearTimeout(dailyTimeout);
+    };
+  }, []);
+
+  const fetchLatestCurrencyData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/currency-matrix/latest');
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Validate that we have data for all currencies
+        const hasValidData = currencies.some(currency => data[currency]);
+        
+        if (hasValidData) {
+          // Merge with default data to ensure all currencies are present
+          const mergedData = { ...defaultFundamentalData };
+          Object.keys(data).forEach(currency => {
+            if (data[currency] && currencies.includes(currency)) {
+              mergedData[currency as keyof typeof defaultFundamentalData] = data[currency];
+            }
+          });
+          
+          setFundamentalData(mergedData);
+          setLastUpdated(new Date());
+          
+          toast({
+            title: 'Matrix Updated',
+            description: 'Currency analysis has been updated with latest data.',
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch currency matrix data:', error);
+      toast({
+        title: 'Update Failed',
+        description: 'Failed to fetch latest currency analysis. Using cached data.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    fetchLatestCurrencyData();
+  };
 
   return (
     <TooltipProvider>
@@ -111,18 +209,37 @@ export function FundamentalCurrencyMatrixWidget() {
               </CardTitle>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline" className="text-primary border-primary/50">
-                  Real-time Analysis
+                  {loading ? 'Updating...' : 'Live Data'}
                 </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRefresh}
+                  disabled={loading}
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                </Button>
                 <Tooltip>
                   <TooltipTrigger>
                     <Info className="w-4 h-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>AI-powered fundamental analysis across major currencies</p>
+                    <p>AI-powered fundamental analysis from daily PDF reports</p>
+                    {lastUpdated && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Last updated: {lastUpdated.toLocaleTimeString()}
+                      </p>
+                    )}
                   </TooltipContent>
                 </Tooltip>
               </div>
             </div>
+            {lastUpdated && (
+              <p className="text-xs text-muted-foreground">
+                Updated daily at 7:30 AM • Last update: {lastUpdated.toLocaleDateString()} {lastUpdated.toLocaleTimeString()}
+              </p>
+            )}
           </CardHeader>
           
           <CardContent className="space-y-4">
@@ -140,7 +257,7 @@ export function FundamentalCurrencyMatrixWidget() {
                 </thead>
                 <tbody>
                   {currencies.map((currency, index) => {
-                    const data = fundamentalData[currency as keyof typeof fundamentalData];
+                    const data = fundamentalData[currency];
                     return (
                       <motion.tr
                         key={currency}
@@ -160,22 +277,22 @@ export function FundamentalCurrencyMatrixWidget() {
                         </td>
                         <td className="py-3 px-2 text-center">
                           <Badge variant="outline" className={`text-xs ${getBiasColor(data.overall)}`}>
-                            {data.overall.toUpperCase()}
+                            {data.overall?.toUpperCase() || 'N/A'}
                           </Badge>
                         </td>
                         <td className="py-3 px-2 text-center">
                           <Badge variant="outline" className={`text-xs ${getBiasColor(data.interestRate)}`}>
-                            {data.interestRate.toUpperCase()}
+                            {data.interestRate?.toUpperCase() || 'N/A'}
                           </Badge>
                         </td>
                         <td className="py-3 px-2 text-center">
                           <Badge variant="outline" className={`text-xs ${getBiasColor(data.growth)}`}>
-                            {data.growth.toUpperCase()}
+                            {data.growth?.toUpperCase() || 'N/A'}
                           </Badge>
                         </td>
                         <td className="py-3 px-2 text-center">
                           <Badge variant="outline" className={`text-xs ${getBiasColor(data.inflation)}`}>
-                            {data.inflation.toUpperCase()}
+                            {data.inflation?.toUpperCase() || 'N/A'}
                           </Badge>
                         </td>
                       </motion.tr>
@@ -205,7 +322,7 @@ export function FundamentalCurrencyMatrixWidget() {
                   </Button>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {fundamentalData[selectedCurrency as keyof typeof fundamentalData].details}
+                  {fundamentalData[selectedCurrency].details}
                 </p>
               </motion.div>
             )}

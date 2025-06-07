@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard.tsx";
 import MarketAnalysis from "./pages/MarketAnalysis";
+import ReportsAnalytics from "./pages/ReportsAnalytics";
 import WorkInProgress from "./pages/WorkInProgress";
 import AuthPage from "./pages/AuthPage";
 import AdminPanel from "./pages/AdminPanel";
@@ -17,6 +18,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ProfileSettings } from "./pages/ProfileSettings";
+import { Settings } from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,14 @@ const App = () => (
                 element={
                   <MainLayout>
                     <MarketAnalysis />
+                  </MainLayout>
+                }
+              />
+              <Route 
+                path="/reports"
+                element={
+                  <MainLayout>
+                    <ReportsAnalytics />
                   </MainLayout>
                 }
               />
@@ -111,6 +121,14 @@ const App = () => (
                 element={
                   <MainLayout>
                     <ProfileSettings />
+                  </MainLayout>
+                }
+              />
+              <Route 
+                path="/settings"
+                element={
+                  <MainLayout>
+                    <Settings />
                   </MainLayout>
                 }
               />

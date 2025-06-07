@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileText, MessageSquare, Clock, TrendingUp, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
 
 interface DailyReport {
   id: string;
@@ -15,14 +16,16 @@ interface DailyReport {
   createdAt: Date;
 }
 
-const todayDate = new Date().toLocaleDateString('en-US', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+const getTodayDate = () => {
+  return new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
 
-const keyInsights = [
+const defaultKeyInsights = [
   {
     title: 'Fed Hawkish Rhetoric Strengthens USD',
     impact: 'HIGH',
@@ -57,10 +60,19 @@ function getImpactColor(impact: string) {
 export function DailyFundamentalReportWidget() {
   const [latestReport, setLatestReport] = useState<DailyReport | null>(null);
   const [loading, setLoading] = useState(false);
+  const [keyInsights, setKeyInsights] = useState(defaultKeyInsights);
+  const [currentDate, setCurrentDate] = useState(getTodayDate());
   const { toast } = useToast();
 
   useEffect(() => {
     fetchLatestReport();
+    
+    // Update date every minute to ensure it's always current
+    const dateInterval = setInterval(() => {
+      setCurrentDate(getTodayDate());
+    }, 60000);
+    
+    return () => clearInterval(dateInterval);
   }, []);
 
   const fetchLatestReport = async () => {
@@ -69,14 +81,41 @@ export function DailyFundamentalReportWidget() {
       if (response.ok) {
         const data = await response.json();
         setLatestReport(data);
+        
+        // Fetch AI-generated insights from the PDF content
+        if (data && data.content) {
+          fetchKeyInsights(data.content);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch latest report:', error);
     }
   };
+  
+  const fetchKeyInsights = async (reportContent: string) => {
+    try {
+      const response = await fetch('/api/daily-reports/extract-insights', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: reportContent }),
+      });
+      
+      if (response.ok) {
+        const insights = await response.json();
+        if (insights && insights.length > 0) {
+          setKeyInsights(insights);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch key insights:', error);
+    }
+  };
 
   const handleDownloadReport = async () => {
-    if (!latestReport) {
+    await fetchLatestReport(); // Refresh latest report data
+    if (!latestReport || !latestReport.pdfUrl) {
       toast({
         title: 'No Report Available',
         description: 'No daily report is currently available for download.',
@@ -85,13 +124,47 @@ export function DailyFundamentalReportWidget() {
       return;
     }
 
-    setLoading(true);
     try {
-      // Open the PDF in a new tab for download
-      window.open(latestReport.pdfUrl, '_blank');
+      // Get the current session for authentication
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          title: 'Authentication Required',
+          description: 'Please log in to download reports.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      // Extract filename from pdfUrl
+      const filename = latestReport.pdfUrl.split('/').pop();
+      
+      // Create authenticated download request
+      const response = await fetch(`/api/download/pdf/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+
+      // Create blob and download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'helix-daily-report.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
       toast({
         title: 'Download Started',
-        description: 'The daily report PDF is opening in a new tab.',
+        description: 'The daily report PDF is downloading.',
       });
     } catch (error) {
       toast({
@@ -99,8 +172,6 @@ export function DailyFundamentalReportWidget() {
         description: 'Failed to download the daily report. Please try again.',
         variant: 'destructive',
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -124,7 +195,7 @@ export function DailyFundamentalReportWidget() {
                 </CardTitle>
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Clock className="w-4 h-4" />
-                  <span>{todayDate} • 7:30 AM EST</span>
+                  <span>{currentDate} • 7:30 AM EST</span>
                   <Badge variant="outline" className="text-green-400 border-green-400/50">
                     Fresh Analysis
                   </Badge>

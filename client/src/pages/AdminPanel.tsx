@@ -6,8 +6,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Bell, FileText, Upload, Send, Download } from 'lucide-react';
+import { Bell, FileText, Upload, Send, Download, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { SchedulerStatus } from '@/components/admin/SchedulerStatus';
+import { supabase } from '@/lib/supabase';
 
 interface Notification {
   id: string;
@@ -224,7 +226,7 @@ export default function AdminPanel() {
       </div>
 
       <Tabs defaultValue="notifications" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="notifications" className="flex items-center gap-2">
             <Bell className="h-4 w-4" />
             Notifications
@@ -232,6 +234,10 @@ export default function AdminPanel() {
           <TabsTrigger value="reports" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
             Daily Reports
+          </TabsTrigger>
+          <TabsTrigger value="scheduler" className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            Scheduler
           </TabsTrigger>
         </TabsList>
 
@@ -448,7 +454,31 @@ export default function AdminPanel() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => window.open(report.pdfUrl, '_blank')}
+                            onClick={async () => {
+                              try {
+                                const { data: { session } } = await supabase.auth.getSession();
+                                if (!session) {
+                                  toast({ title: 'Authentication Required', description: 'Please log in to download reports.', variant: 'destructive' });
+                                  return;
+                                }
+                                const filename = report.pdfUrl.split('/').pop();
+                                const response = await fetch(`/api/download/pdf/${filename}`, {
+                                  headers: { 'Authorization': `Bearer ${session.access_token}` },
+                                });
+                                if (!response.ok) throw new Error('Download failed');
+                                const blob = await response.blob();
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = filename || 'report.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                                document.body.removeChild(a);
+                              } catch (error) {
+                                toast({ title: 'Download Failed', description: 'Failed to download the report.', variant: 'destructive' });
+                              }
+                            }}
                           >
                             <Download className="h-4 w-4" />
                           </Button>
@@ -460,6 +490,10 @@ export default function AdminPanel() {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="scheduler" className="space-y-6">
+          <SchedulerStatus />
         </TabsContent>
       </Tabs>
     </div>

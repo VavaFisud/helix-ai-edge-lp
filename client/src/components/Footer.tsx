@@ -48,7 +48,7 @@ const Footer = () => {
                 <div className="relative">
                   <div className="absolute -inset-2 bg-[#0066CC]/30 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-glow"></div>
                   <img 
-                    src="/lovable-uploads/fcc2c656-66bd-402c-a0c7-67f47ff18ea6.png" 
+                    src="/helix-logo.svg" 
                     alt="Helix Terminal" 
                     className="relative w-10 h-10 animate-glow"
                   />

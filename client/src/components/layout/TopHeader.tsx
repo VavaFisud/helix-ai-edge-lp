@@ -314,11 +314,11 @@ export function TopHeader({
                   </Link>
                   {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-muted/50 cursor-pointer">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                  {/* <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> */}                 
-
+                <DropdownMenuItem asChild className="hover:bg-muted/50 cursor-pointer">
+                  <Link to="/settings">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:bg-red-500/10 cursor-pointer focus:bg-red-500/10 focus:text-red-500">

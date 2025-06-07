@@ -15,7 +15,7 @@ export default function AdminProtectedRoute() {
         console.error('Error getting session:', error);
       } else {
         setSession(data.session);
-        // Debug: afficher les métadonnées utilisateur
+        // Debug: display user metadata
         console.log('AdminProtectedRoute - User metadata:', data.session?.user?.user_metadata);
         console.log('AdminProtectedRoute - User role:', data.session?.user?.user_metadata?.role);
         
@@ -35,7 +35,7 @@ export default function AdminProtectedRoute() {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
-        // Debug: afficher les métadonnées utilisateur
+        // Debug: display user metadata
         console.log('AdminProtectedRoute - Auth change - User metadata:', session?.user?.user_metadata);
         
         // Vérifier le rôle admin lors du changement de session

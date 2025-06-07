@@ -59,6 +59,47 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Express.js (Backend)
+- Google Gemini AI
+- Puppeteer (PDF Generation)
+- Node-cron (Scheduler)
+
+## 🤖 AI-Powered Features
+
+This application includes an advanced AI-powered scheduling system:
+
+### Automatic PDF Report Generation
+- **Daily AI Reports**: Automatically generates branded PDF reports using Google Gemini AI
+- **Scheduled Execution**: Reports are generated daily at 7:00 AM EST (12:00 UTC)
+- **Branded Design**: PDF reports include Helix Terminal branding and logo
+- **Auto Upload**: Generated PDFs are automatically uploaded and notifications sent at 7:30 AM EST
+
+### Configuration Required
+
+1. **Copy environment variables**:
+   ```sh
+   cp .env.example .env
+   ```
+
+2. **Configure Google Gemini API**:
+   - Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Add it to your `.env` file:
+     ```
+     GOOGLE_GEMINI_API_KEY=your_api_key_here
+     ```
+
+3. **Optional configurations**:
+   ```
+   PDF_BRAND_NAME="Your Company Name"
+   PDF_LOGO_PATH="/path/to/your/logo.png"
+   SCHEDULER_ENABLED=true
+   ```
+
+### Admin Features
+- **Scheduler Status**: Monitor AI scheduling system in the admin panel
+- **Manual Testing**: Test AI PDF generation and upload functionality
+- **Real-time Monitoring**: View scheduled tasks and their execution times
+- **Notification System**: Automatic notifications when reports are ready
 
 ## How can I deploy this project?
 

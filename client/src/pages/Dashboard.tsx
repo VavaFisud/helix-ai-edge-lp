@@ -74,7 +74,7 @@ export default function Dashboard() {
           }
         }
         
-        console.log('Données utilisateur récupérées:', {
+        console.log('User data retrieved:', {
           firstName,
           lastName,
           email,

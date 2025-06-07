@@ -8,7 +8,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react'; 
 import { FcGoogle } from 'react-icons/fc';
-import { FaApple } from 'react-icons/fa';
 import ForexLogos from './ForexLogos';
 
 export default function AuthForm() { // Renamed to avoid conflict, will be primary component
@@ -118,30 +117,7 @@ export default function AuthForm() { // Renamed to avoid conflict, will be prima
     }
   };
 
-  const handleAppleAuth = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
-      });
-      
-      if (error) {
-        toast({
-          title: 'Error',
-          description: error.message,
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to authenticate with Apple.',
-        variant: 'destructive',
-      });
-    }
-  };
+
 
   const toggleFormType = () => {
     const newFormType = isSignUp ? 'signin' : 'signup';
@@ -166,7 +142,7 @@ export default function AuthForm() { // Renamed to avoid conflict, will be prima
               className="flex items-center mb-4 hover:opacity-80 transition-opacity duration-200"
             >
               <img 
-                src="/lovable-uploads/fcc2c656-66bd-402c-a0c7-67f47ff18ea6.png" 
+                src="/helix-logo.svg" 
                 alt="Helix Terminal Logo" 
                 className="w-6 h-6 mr-2"
               />
@@ -180,20 +156,13 @@ export default function AuthForm() { // Renamed to avoid conflict, will be prima
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="mb-4">
             <Button 
               onClick={handleGoogleAuth}
               type="button"
               className="w-full flex items-center justify-center py-2 bg-slate-700 text-slate-200 hover:bg-slate-600 text-xs rounded-lg font-medium transition-all duration-200 border border-slate-600"
             >
-              <FcGoogle className="mr-1" size={16}/> Google
-            </Button>
-            <Button 
-              onClick={handleAppleAuth}
-              type="button"
-              className="w-full flex items-center justify-center py-2 bg-slate-700 text-slate-200 hover:bg-slate-600 text-xs rounded-lg font-medium transition-all duration-200 border border-slate-600"
-            >
-              <FaApple className="mr-1" size={16}/> Apple
+              <FcGoogle className="mr-2" size={16}/> Continue with Google
             </Button>
           </div>
 
