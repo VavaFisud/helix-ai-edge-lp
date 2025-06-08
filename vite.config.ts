@@ -7,7 +7,7 @@ export default defineConfig({
   root: 'client', 
 
   // ensure HTML imports resolve relative to client/ 
-  base: '/', 
+  base: './', 
 
   plugins: [react()], 
 
@@ -26,9 +26,8 @@ export default defineConfig({
     emptyOutDir: true, 
 
     // explicitly feed Rollup the real HTML path 
-    rollupOptions: { 
-      input: path.resolve(__dirname, 'client/index.html'),
-      external: ['/src/main.tsx']
+    rollupOptions: {
+      input: path.resolve(__dirname, 'client/index.html')
     }, 
   }, 
 })
