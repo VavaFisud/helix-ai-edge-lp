@@ -91,7 +91,7 @@ export class MemStorage implements IStorage {
         id: uuidv4(),
         title: "Welcome to Helix AI",
         content: "Your financial analysis platform is ready to use.",
-      message: "Your financial analysis platform is ready to use.",
+        message: "Your financial analysis platform is ready to use.",
         type: "info" as const,
         isGlobal: true,
         isRead: false,
