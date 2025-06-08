@@ -7,7 +7,7 @@ export default defineConfig({
   root: 'client', 
 
   // ensure HTML imports resolve relative to client/ 
-  base: '/', 
+  base: './', 
 
   plugins: [react()], 
 
