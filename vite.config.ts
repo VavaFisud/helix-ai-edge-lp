@@ -22,12 +22,12 @@ export default defineConfig({
   publicDir: path.resolve(__dirname, 'public'), 
 
   build: { 
-    outDir: path.resolve(__dirname, 'dist/client'), 
+    outDir: path.resolve(__dirname, 'dist'), 
     emptyOutDir: true, 
 
     // explicitly feed Rollup the real HTML path 
     rollupOptions: {
-      input: 'index.html'
+      input: path.resolve(__dirname, 'client/index.html')
     }, 
   }, 
 })
