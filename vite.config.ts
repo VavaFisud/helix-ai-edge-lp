@@ -7,7 +7,7 @@ export default defineConfig({
   root: 'client', 
 
   // ensure HTML imports resolve relative to client/ 
-  base: './', 
+  base: '/', 
 
   plugins: [react()], 
 
@@ -27,7 +27,7 @@ export default defineConfig({
 
     // explicitly feed Rollup the real HTML path 
     rollupOptions: { 
-      input: 'index.html', 
+      input: path.resolve(__dirname, 'client/index.html'), 
     }, 
   }, 
 })
