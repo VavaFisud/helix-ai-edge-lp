@@ -6,7 +6,7 @@ export default defineConfig({
   // now that this lives in client/, "." is your source root 
   root: '.', 
   // build output will be relative URLs 
-  base: './', 
+  base: '/', 
 
   plugins: [react()], 
 
