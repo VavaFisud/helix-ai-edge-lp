@@ -27,7 +27,7 @@ export default defineConfig({
 
     // explicitly feed Rollup the real HTML path 
     rollupOptions: { 
-      input: path.resolve(__dirname, 'client/index.html'), 
+      input: 'index.html', 
     }, 
   }, 
 })
