@@ -19,10 +19,5 @@
       "dest": "/dist/client/$1"
     }
   ],
-  "functions": {
-    "dist/index.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "outputDirectory": "dist"
 }
