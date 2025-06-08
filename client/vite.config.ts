@@ -17,7 +17,7 @@ export default defineConfig({
     outDir: path.resolve(__dirname, '..', 'dist', 'client'),
     emptyOutDir: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'), // Explicitly set index.html as input
+      input: 'index.html', // Explicitly set index.html as input relative to root
     },
   },
 });
