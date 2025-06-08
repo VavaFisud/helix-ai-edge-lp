@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path' 
 
 export default defineConfig({ 
-  // point all file lookups at /client 
+  // keep looking inside /client 
   root: 'client', 
 
-  // emit URLs relative to the build output (so ./src/main.tsx works) 
+  // ensure HTML imports resolve relative to client/ 
   base: './', 
 
   plugins: [react()], 
@@ -19,12 +19,15 @@ export default defineConfig({
     }, 
   }, 
 
-  // serve static assets from repo-root/public 
   publicDir: path.resolve(__dirname, 'public'), 
 
   build: { 
-    // output to repo-root/dist/client 
     outDir: path.resolve(__dirname, 'dist/client'), 
     emptyOutDir: true, 
+
+    // explicitly feed Rollup the real HTML path 
+    rollupOptions: { 
+      input: path.resolve(__dirname, 'client/index.html'), 
+    }, 
   }, 
 })
