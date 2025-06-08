@@ -24,8 +24,6 @@ import { defineConfig } from 'vite'
      // emit files into repo-root/dist/client 
      outDir: path.resolve(__dirname, 'dist/client'), 
      emptyOutDir: true, 
-     rollupOptions: { 
-       input: 'index.html', 
-     }, 
+ 
    }, 
  })
