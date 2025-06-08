@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
  
  export default defineConfig({ 
    // point Vite at the client folder 
-   root: path.resolve(__dirname, 'client'), 
+   root: 'client', 
  
    plugins: [react()], 
  
@@ -25,7 +25,7 @@ import { defineConfig } from 'vite'
      outDir: path.resolve(__dirname, 'dist/client'), 
      emptyOutDir: true, 
      rollupOptions: { 
-       input: path.resolve(__dirname, 'client/index.html'), 
+       input: 'index.html', 
      }, 
    }, 
  })
