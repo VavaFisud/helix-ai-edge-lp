@@ -72,7 +72,14 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "..", "dist", "client");
+  // In Vercel serverless environment, the built file is at dist/index.js
+  // and we need to serve from dist/client which is a sibling directory
+  let distPath = path.resolve(import.meta.dirname, "..", "dist", "client");
+  
+  // If running from within dist/ (production), adjust the path
+  if (import.meta.dirname.endsWith('dist')) {
+    distPath = path.resolve(import.meta.dirname, "client");
+  }
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
