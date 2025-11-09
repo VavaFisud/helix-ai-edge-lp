@@ -23,7 +23,7 @@ export default defineConfig({
 
   build: {
     // Spécifie le dossier de sortie par rapport à la racine du projet
-    outDir: '../dist/client',
+    outDir: '../dist',
     emptyOutDir: true,
   },
 });
