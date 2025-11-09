@@ -2,7 +2,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 import { Readable } from 'stream';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Type aliases for extractKeyInsights return type
 type KeyInsight = {
