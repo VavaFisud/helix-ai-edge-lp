@@ -1,27 +1,26 @@
-import { defineConfig } from 'vite' 
-import react from '@vitejs/plugin-react' 
-import path from 'path' 
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-export default defineConfig({ 
-  base: '/', 
+export default defineConfig({
+  // Définit la racine de l'application cliente
+  root: 'client',
+  base: '/',
 
-  plugins: [react()], 
+  plugins: [react()],
 
-  resolve: { 
-    alias: { 
-      '@': path.resolve(__dirname, 'client/src'), 
-      '@server': path.resolve(__dirname, 'server'), 
-      '@shared': path.resolve(__dirname, 'shared'), 
-    }, 
-  }, 
+  resolve: {
+    alias: {
+      // Les alias doivent être résolus depuis la racine du projet, pas depuis 'client'
+      '@': path.resolve(__dirname, 'client/src'),
+      '@server': path.resolve(__dirname, 'server'),
+      '@shared': path.resolve(__dirname, 'shared'),
+    },
+  },
 
-  publicDir: 'public', 
-
-  build: { 
-    outDir: 'dist', 
-    emptyOutDir: true, 
-    rollupOptions: {
-      input: 'client/index.html'
-    }, 
-  }, 
-})
+  build: {
+    // Spécifie le dossier de sortie par rapport à la racine du projet
+    outDir: '../dist/client',
+    emptyOutDir: true,
+  },
+});
